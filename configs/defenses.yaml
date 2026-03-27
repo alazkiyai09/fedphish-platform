@@ -1,0 +1,7 @@
+defenses:
+  - name: anomaly_detection
+    enabled: true
+  - name: gradient_forensics
+    enabled: true
+  - name: honeypot
+    enabled: true

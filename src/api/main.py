@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 
 from src.api.routers import benchmark, predict, security, training
 
@@ -34,3 +34,22 @@ async def metrics() -> dict:
         "benchmark_count": len(app.state.benchmarks),
         "coevolution_runs": len(app.state.coevolution_runs),
     }
+
+
+@app.websocket("/ws/simulation")
+async def ws_simulation(websocket: WebSocket) -> None:
+    """Lightweight simulation websocket for dashboard compatibility."""
+    await websocket.accept()
+    try:
+        await websocket.send_text("simulation_connected")
+        while True:
+            message = await websocket.receive_text()
+            if message.strip().lower() in {"stop", "close", "disconnect"}:
+                await websocket.send_text("simulation_disconnected")
+                await websocket.close()
+                return
+            await websocket.send_text(
+                f"simulation_update|active={app.state.training['active']}|benchmarks={len(app.state.benchmarks)}|runs={len(app.state.coevolution_runs)}"
+            )
+    except WebSocketDisconnect:
+        return

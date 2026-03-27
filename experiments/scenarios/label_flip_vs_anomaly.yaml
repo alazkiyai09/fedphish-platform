@@ -1,0 +1,5 @@
+scenario:
+  name: label_flip_vs_anomaly
+  rounds: 20
+  attack: label_flip
+  defense: anomaly_detection

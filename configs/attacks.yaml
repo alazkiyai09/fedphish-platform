@@ -1,0 +1,7 @@
+attacks:
+  - name: label_flip
+    enabled: true
+    probability: 0.15
+  - name: backdoor
+    enabled: true
+    probability: 0.10

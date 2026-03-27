@@ -1,0 +1,5 @@
+scenario:
+  name: full_arms_race
+  rounds: 30
+  attack: adaptive_combo
+  defense: gradient_forensics

@@ -1,0 +1,4 @@
+coevolution:
+  default_rounds: 15
+  attack_pool: [label_flip, backdoor, model_poisoning]
+  defense_pool: [anomaly_detection, honeypot, gradient_forensics]

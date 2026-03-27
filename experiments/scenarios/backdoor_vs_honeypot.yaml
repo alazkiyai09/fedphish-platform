@@ -1,0 +1,5 @@
+scenario:
+  name: backdoor_vs_honeypot
+  rounds: 20
+  attack: backdoor
+  defense: honeypot

@@ -37,6 +37,12 @@ async def get_coevolution(run_id: str, request: Request) -> dict:
     return result
 
 
+@router.get("/coevolution/{id}")
+async def get_coevolution_by_id(id: str, request: Request) -> dict:
+    """Compatibility alias for plan endpoint shape."""
+    return await get_coevolution(run_id=id, request=request)
+
+
 @router.get("/game-theory")
 async def get_game_theory() -> dict:
     return {"nash_equilibrium": {"attack": "gradual_backdoor", "defense": "honeypot"}, "payoff": 0.73}

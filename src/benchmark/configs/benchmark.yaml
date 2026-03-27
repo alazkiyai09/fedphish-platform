@@ -1,0 +1,4 @@
+benchmark:
+  scenarios: [vertical_fl, attack_defense, privacy_stress]
+  rounds: 25
+  metrics: [auc, f1, attack_success_rate, privacy_loss]
