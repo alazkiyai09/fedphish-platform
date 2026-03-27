@@ -1,0 +1,23 @@
+# Scenario: Label Flip vs Multi-Round Anomaly Detection
+
+attack:
+  type: "label_flip"
+  flip_ratio: 0.3
+  evasion_strategy: "stay_under_bound"
+  knows_defense: true
+
+defense:
+  type: "multi_round_anomaly"
+  window_size: 10
+  threshold_method: "adaptive"
+  baseline_method: "moving_average"
+
+coevolution:
+  num_rounds: 20
+  num_clients: 10
+  num_malicious: 2
+
+expected_outcomes:
+  description: "Label flip attack adapts to stay under detection threshold"
+  equilibrium_likelihood: "high"
+  arms_race: "moderate"

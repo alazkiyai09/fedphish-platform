@@ -1,0 +1,124 @@
+# Bank Profiles Configuration
+# Realistic configurations for 5 different banks
+
+global_bank:
+  name: "Global Bank"
+  type: "international"
+  n_samples: 100000
+  phishing_distribution:
+    generic_phishing: 0.40
+    spear_phishing: 0.20
+    whaling: 0.10
+    vishing: 0.10
+    smishing: 0.10
+    qr_code: 0.05
+    business_email_compromise: 0.05
+  data_quality: 0.95
+  languages: ["en", "es", "fr", "de", "zh", "ja"]
+  temporal_shift: 0.0  # Reference baseline
+  geographic_scope: "global"
+  customer_segments: ["retail", "commercial", "investment", "private_banking"]
+
+regional_bank:
+  name: "Regional Bank"
+  type: "local"
+  n_samples: 30000
+  phishing_distribution:
+    generic_phishing: 0.30
+    spear_phishing: 0.40  # High - targeted local attacks
+    whaling: 0.05
+    vishing: 0.10
+    smishing: 0.10
+    qr_code: 0.03
+    local_brand_impersonation: 0.02  # Unique to regional
+  data_quality: 0.82
+  languages: ["en"]  # Primarily English
+  temporal_shift: 0.05  # Slightly newer attacks
+  geographic_scope: "north_america"
+  customer_segments: ["retail", "small_business"]
+
+digital_bank:
+  name: "Digital Bank"
+  type: "app_first"
+  n_samples: 50000
+  phishing_distribution:
+    generic_phishing: 0.25
+    spear_phishing: 0.15
+    whaling: 0.05
+    vishing: 0.05
+    smishing: 0.35  # Very high - SMS phishing
+    qr_code: 0.10
+    app_spoofing: 0.05  # Unique to digital
+  data_quality: 0.88
+  languages: ["en"]
+  temporal_shift: 0.10  # Newer attack vectors
+  geographic_scope: "digital_only"
+  customer_segments: ["mobile_first", "digital_native"]
+
+credit_union:
+  name: "Credit Union"
+  type: "member_focused"
+  n_samples: 15000
+  phishing_distribution:
+    generic_phishing: 0.35
+    spear_phishing: 0.25
+    whaling: 0.02
+    vishing: 0.08
+    smishing: 0.10
+    trust_exploitation: 0.15  # High - impersonation attacks
+    qr_code: 0.05
+  data_quality: 0.75  # Lower - smaller security team
+  languages: ["en"]
+  temporal_shift: -0.05  # Slightly older attacks
+  geographic_scope: "local_community"
+  customer_segments: ["members", "local_community", "seniors"]
+
+investment_bank:
+  name: "Investment Bank"
+  type: "high_value"
+  n_samples: 10000
+  phishing_distribution:
+    generic_phishing: 0.20
+    spear_phishing: 0.30
+    whaling: 0.35  # Very high - C-level targets
+    vishing: 0.05
+    smishing: 0.02
+    business_email_compromise: 0.08
+  data_quality: 0.92  # High - sophisticated security team
+  languages: ["en"]
+  temporal_shift: 0.15  # Cutting edge attacks
+  geographic_scope: "global"
+  customer_segments: ["high_net_worth", "corporate", "institutional"]
+
+# Global training configuration
+training:
+  n_rounds: 50
+  local_epochs: 5
+  batch_size: 32
+  learning_rate: 0.001
+  client_learning_rate: 0.01
+  fraction_fit: 1.0  # All clients participate
+  fraction_evaluate: 0.5  # Half of clients for evaluation
+  min_fit_clients: 3
+  min_evaluate_clients: 2
+  min_available_clients: 3
+
+# Privacy configurations
+privacy:
+  local_dp:
+    enabled: false
+    epsilon: 1.0
+    delta: 1e-5
+    max_grad_norm: 1.0
+
+  secure_aggregation:
+    enabled: false
+    encryption_scheme: "ckks"  # CKKS from TenSEAL
+    poly_modulus_degree: 8192
+    coeff_mod_bit_sizes: [40, 20, 20]
+    scale: 2**20
+
+  hybrid:
+    enabled: false
+    epsilon: 1.0
+    use_tee: true  # Use TEE for computation

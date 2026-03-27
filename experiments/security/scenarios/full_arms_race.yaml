@@ -1,0 +1,58 @@
+# Scenario: Full Arms Race - All Attacks vs All Defenses
+
+# This scenario explores the complete arms race dynamics
+# across all attack and defense types
+
+experiments:
+  - attack: "label_flip"
+    defense: "multi_round_anomaly"
+
+  - attack: "label_flip"
+    defense: "honeypot"
+
+  - attack: "label_flip"
+    defense: "gradient_forensics"
+
+  - attack: "backdoor"
+    defense: "multi_round_anomaly"
+
+  - attack: "backdoor"
+    defense: "honeypot"
+
+  - attack: "backdoor"
+    defense: "gradient_forensics"
+
+  - attack: "model_poisoning"
+    defense: "multi_round_anomaly"
+
+  - attack: "model_poisoning"
+    defense: "honeypot"
+
+  - attack: "model_poisoning"
+    defense: "gradient_forensics"
+
+  - attack: "evasion_poisoning"
+    defense: "multi_round_anomaly"
+
+  - attack: "evasion_poisoning"
+    defense: "honeypot"
+
+  - attack: "evasion_poisoning"
+    defense: "gradient_forensics"
+
+coevolution:
+  num_rounds: 30
+  num_clients: 10
+  num_malicious: 2
+
+analysis:
+  compute_payoff_matrix: true
+  compute_nash_equilibrium: true
+  identify_dominant_strategies: true
+
+expected_outcomes:
+  description: "Comprehensive arms race analysis across all strategies"
+  research_questions:
+    - "Which attack-defense pairs reach equilibrium?"
+    - "Is there a dominant strategy for either player?"
+    - "What conditions lead to arms race vs equilibrium?"

@@ -1,0 +1,74 @@
+# Phishing Dataset Configuration
+
+dataset:
+  name: "phishing_url"
+  version: "1.0"
+
+  # Data paths
+  raw_path: "${oc.env:PWD}/data/raw/phishing_dataset.csv"
+  processed_path: "${oc.env:PWD}/data/processed"
+
+  # Data characteristics
+  num_classes: 2  # phishing vs legitimate
+  feature_dim: 0  # Will be determined from data
+  num_samples: 0  # Will be determined from data
+
+  # Data split
+  train_ratio: 0.7
+  val_ratio: 0.15
+  test_ratio: 0.15
+
+  # Preprocessing
+  preprocessing:
+    text_max_length: 512
+    lowercase: true
+    remove_special_chars: true
+    normalize_urls: true
+    feature_extraction: "tfidf"  # tfidf, count, bert
+
+  # Partitioning
+  partition:
+    num_clients: 10  # Number of banks
+    balance: true  # Balance samples across clients
+
+    # IID partitioning
+    iid:
+      shuffle: true
+      stratify: true
+
+    # Non-IID partitioning (Dirichlet)
+    non_iid:
+      alpha: 0.5  # Lower = more skewed
+      min_samples_per_client: 100
+
+    # Label skew partitioning
+    label_skew:
+      labels_per_client: 2  # Each bank sees only 2 types of phishing
+      min_samples_per_client: 100
+
+  # Data augmentation
+  augmentation:
+    enabled: false
+    techniques:
+      - synonym_replacement
+      - random_insertion
+      - random_swap
+
+# Feature extraction for classical ML
+features:
+  # URL features
+  url_length: true
+  has_ip: true
+  has_at_symbol: true
+  num_dots: true
+  num_subdomains: true
+  has_https: true
+  domain_length: true
+
+  # Text features
+  tfidf_max_features: 5000
+  tfidf_ngram_range: [1, 2]
+
+  # BERT features (optional)
+  use_bert_embeddings: false
+  bert_model: "distilbert-base-uncased"

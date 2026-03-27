@@ -1,0 +1,1 @@
+"""FedPhish Dashboard Backend Application"""

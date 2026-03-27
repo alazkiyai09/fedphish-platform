@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ../backend
+      dockerfile: ../docker/Dockerfile.backend
+    container_name: fedphish-backend
+    ports:
+      - "8001:8001"
+    networks:
+      - fedphish-net
+
+  frontend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.frontend
+    container_name: fedphish-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - fedphish-net
+
+networks:
+  fedphish-net:
+    driver: bridge

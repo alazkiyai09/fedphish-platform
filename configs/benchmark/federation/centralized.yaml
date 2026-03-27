@@ -1,0 +1,33 @@
+# Centralized Training Configuration (Baseline)
+
+federation:
+  type: "centralized"
+
+  # Training settings
+  training:
+    num_epochs: 50
+    batch_size: 128
+    learning_rate: 0.01
+    optimizer: "adam"
+
+  # Server settings (not used, but for API consistency)
+  server:
+    address: "127.0.0.1:8080"
+    num_rounds: 1  # Single round for centralized
+
+  # Client settings (not used)
+  client:
+    num_clients: 1  # All data on single client
+
+  # Aggregation (not used)
+  aggregation:
+    method: "none"
+
+  # Privacy
+  privacy:
+    enabled: false
+
+  # Evaluation
+  evaluation:
+    round_metrics: true
+    final_metrics: true

@@ -1,0 +1,30 @@
+# Defense configurations
+
+multi_round_anomaly:
+  window_size: 10
+  threshold_method: "adaptive"  # "adaptive", "static"
+  baseline_method: "moving_average"  # "moving_average", "exponential", "percentile"
+  static_threshold: 3.0
+  alpha: 0.1  # For exponential moving average
+  percentile: 95  # For percentile baseline
+
+honeypot:
+  num_honeypots: 3
+  honeypot_strategy: "random"  # "random", "cluster_based"
+  deviation_threshold: 2.0
+  distance_metric: "cosine"  # "cosine", "euclidean", "manhattan"
+
+gradient_forensics:
+  analysis_method: "pca"  # "pca", "clustering", "distance", "combined"
+  coordination_threshold: 0.9
+  pca_variance_threshold: 0.95
+  clustering_method: "dbscan"  # "dbscan", "kmeans", "hierarchical"
+  dbscan_eps: 0.5
+  dbscan_min_samples: 2
+
+defender_observability:
+  sees_gradients: true
+  sees_updates: true
+  sees_data: false  # Defender doesn't see client data
+  sees_client_ids: true
+  knows_num_malicious: false  # Doesn't know exact number of attackers

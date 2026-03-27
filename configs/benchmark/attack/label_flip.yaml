@@ -1,0 +1,31 @@
+# Label Flip Attack Configuration
+
+attack:
+  type: "label_flip"
+  enabled: false
+
+  # Attack parameters
+  label_flip:
+    flip_ratio: 0.2  # 20% of labels are flipped
+    flip_strategy: "random"  # random, targeted
+
+    # For targeted flipping
+    target_class: 1  # Phishing
+    flip_to: 0  # Flip to legitimate
+
+  # Attacker model
+  attacker:
+    fraction: 0.2  # 20% of clients are malicious
+    selection: "random"  # random, specific
+    specific_clients: []  # Specific client IDs if needed
+
+  # Attack timing
+  timing:
+    start_round: 0  # Start from beginning
+    end_round: null  # Continue till end
+    every_round: true  # Attack every round
+
+  # Evaluation
+  evaluation:
+    measure_asr: true  # Attack success rate
+    measure_degradation: true  # Accuracy degradation

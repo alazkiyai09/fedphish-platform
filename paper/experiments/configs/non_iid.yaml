@@ -1,0 +1,43 @@
+# Non-IID Analysis Experiment
+# Purpose: Show FedPhish handles heterogeneous data
+
+experiment_name: non_iid_analysis
+
+dataset:
+  name: "combined_phishing"
+  total_samples: 100000
+  num_banks: 5
+  random_seed: 42
+
+# Dirichlet alpha values (lower = more non-IID)
+alpha_values: [0.1, 0.3, 0.5, 1.0, 10.0]
+
+partition_strategies:
+  - iid
+  - non_iid_dirichlet
+  - non_iid_pathological
+
+training:
+  rounds: 25
+  local_epochs: 3
+  batch_size: 32
+
+model:
+  name: "fedphish"
+  privacy_level: 2
+  epsilon: 1.0
+  lora_rank: 8
+
+evaluation:
+  metrics:
+    - global_accuracy
+    - per_bank_accuracy  # For fairness analysis
+    - accuracy_variance
+    - convergence_round
+    - fairness_index  # Coefficient of variation
+  num_runs: 5
+  confidence_interval: 0.95
+
+output:
+  results_dir: "experiments/results/non_iid/"
+  filename: "alpha_analysis.csv"

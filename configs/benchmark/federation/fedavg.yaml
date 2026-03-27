@@ -1,0 +1,56 @@
+# FedAvg Configuration
+
+federation:
+  type: "fedavg"
+
+  # Server settings
+  server:
+    address: "127.0.0.1:8080"
+    num_rounds: 50
+    min_fit_clients: 8  # Minimum clients per round
+    min_eval_clients: 8
+    min_available_clients: 10
+
+  # Client settings
+  client:
+    num_clients: 10
+    local_epochs: 5
+    batch_size: 32
+    learning_rate: 0.01
+    optimizer: "sgd"
+    momentum: 0.9
+    weight_decay: 0.0001
+
+  # FedAvg strategy parameters
+  strategy:
+    fraction_fit: 0.8  # 80% of clients per round
+    fraction_evaluate: 0.8
+    min_fit_clients: 8
+    min_evaluate_clients: 8
+    min_available_clients: 10
+
+    # Server-side learning rate
+    server_learning_rate: 1.0
+    server_momentum: 0.0
+
+  # Aggregation
+  aggregation:
+    method: "weighted_avg"  # Weight by client data size
+    clip_norm: null  # No clipping
+
+  # Privacy
+  privacy:
+    enabled: false
+    secure_aggregation: false
+    differential_privacy: false
+
+  # Communication
+  communication:
+    compression: false
+    quantization: false
+
+  # Evaluation
+  evaluation:
+    round_metrics: true
+    final_metrics: true
+    centralized_evaluation: true

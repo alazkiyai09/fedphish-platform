@@ -1,0 +1,87 @@
+# Robustness Against Attacks Experiment
+# Purpose: Evaluate Byzantine defense mechanisms
+
+experiment_name: robustness_evaluation
+
+dataset:
+  name: "combined_phishing"
+  total_samples: 100000
+  train_split: 0.8
+  num_banks: 5
+  partition_strategy: "non-iid"
+  dirichlet_alpha: 0.5
+  random_seed: 42
+
+# Attacks to simulate
+attacks:
+  label_flip:
+    name: "Label Flip"
+    description: "Malicious clients flip all labels"
+    malicious_ratio: 0.2  # 1 of 5 banks
+    flip_ratio: 1.0  # Flip all labels
+
+  backdoor:
+    name: "Backdoor"
+    description: "Malicious clients embed backdoor"
+    malicious_ratio: 0.2
+    trigger_type: "urgent_verify"  # Trigger word
+    target_label: 1  # Phishing
+
+  model_poison:
+    name: "Model Poisoning"
+    description: "Malicious clients poison with gradients"
+    malicious_ratio: 0.2
+    poison_strength: 2.0
+
+# Defenses to test
+defenses:
+  none:
+    name: "No Defense"
+    description: "Standard FedAvg without defenses"
+
+  krum:
+    name: "Krum"
+    description: "Krum robust aggregation"
+    num_malicious: 1
+
+  foolsgold:
+    name: "FoolsGold"
+    description: "Similarity-based defense"
+    num_malicious: 1
+
+  trimmed_mean:
+    name: "Trimmed Mean"
+    description: "Remove extreme values"
+    num_malicious: 1
+
+  fedphish:
+    name: "FedPhish (Ours)"
+    description: "Combined defenses (ZK + FoolsGold + Reputation)"
+    zkp: true
+    foolsgold: true
+    reputation: true
+    num_malicious: 1
+
+training:
+  rounds: 20
+  local_epochs: 3
+  batch_size: 32
+
+model:
+  name: "distilbert-base-uncased"
+  lora_rank: 8
+  privacy_level: 2
+  epsilon: 1.0
+
+evaluation:
+  metrics:
+    - accuracy
+    - accuracy_drop  # Compared to no attack
+    - attack_success_rate
+    - detection_time  # Rounds to detect
+  num_runs: 5
+  confidence_interval: 0.95
+
+output:
+  results_dir: "experiments/results/robustness/"
+  filename: "attack_results.csv"

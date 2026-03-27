@@ -1,0 +1,50 @@
+# Multi-Agent Model Configuration (Simplified for Overhead Comparison)
+
+model:
+  type: "multi_agent"
+
+  # Agent configurations
+  agents:
+    # URL analysis agent
+    url_agent:
+      model: "xgboost"
+      enabled: true
+      weight: 0.3
+
+    # Content analysis agent
+    content_agent:
+      model: "transformer"
+      enabled: true
+      weight: 0.4
+
+    # Metadata agent
+    metadata_agent:
+      model: "random_forest"
+      enabled: true
+      weight: 0.3
+
+  # Coordination strategy
+  coordination:
+    method: "weighted_voting"  # weighted_voting, stacking, meta_learning
+    threshold: 0.5
+
+    # Stacking meta-learner
+    meta_learner:
+      enabled: false
+      model: "logistic_regression"
+
+  # Communication overhead tracking
+  overhead:
+    track_communication: true
+    track_inference_time: true
+    track_memory_usage: true
+
+  # Simplified training (for overhead comparison only)
+  training:
+    train_agents_independently: true
+    num_epochs: 5  # Reduced for faster benchmarking
+
+  # For FL integration
+  fl_integration:
+    aggregate_method: "agent_params"  # agent_params, agent_predictions
+    sync_frequency: 1  # Rounds between full agent sync

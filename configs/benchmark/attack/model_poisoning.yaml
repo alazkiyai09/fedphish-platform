@@ -1,0 +1,45 @@
+# Model Poisoning Attack Configuration
+
+attack:
+  type: "model_poisoning"
+  enabled: false
+
+  # Poisoning parameters
+  model_poisoning:
+    attack_type: "scale_gradients"  # scale_gradients, sign_flip, byzantine
+
+    # Gradient scaling
+    scaling_factor: -5.0  # Negative for degradation
+    scale_all_layers: true
+
+    # Sign flip (alternative)
+    sign_flip_ratio: 1.0  # Flip all gradient signs
+
+    # Byzantine (alternative)
+    byzantine_strategy: "omniscient"  # omniscient, random
+    byzantine_behavior: "random_update"  # random_update, opposite
+
+  # Attacker model
+  attacker:
+    fraction: 0.2  # 20% malicious clients
+    selection: "random"
+    specific_clients: []
+    collusion: true  # Malicious clients collude
+
+  # Attack timing
+  timing:
+    start_round: 0
+    end_round: null
+    every_round: true
+
+  # Advanced: Adaptive attack
+  adaptive:
+    enabled: false
+    adjust_based_on_global_model: true
+    stealth_mode: false  # Try to avoid detection
+
+  # Evaluation
+  evaluation:
+    measure_asr: true
+    measure_degradation: true
+    detect_anomalies: true

@@ -1,0 +1,33 @@
+{
+  "name": "Happy Path",
+  "description": "Smooth federated learning with all honest banks",
+  "duration_minutes": 2,
+  "key_visualizations": [
+    "All banks training (green)",
+    "Accuracy climbing steadily",
+    "Encrypted communication flows"
+  ],
+  "talking_points": [
+    "5 banks collaboratively train phishing detector",
+    "Each bank keeps data private",
+    "Differential privacy + encryption",
+    "Converges to 95% accuracy"
+  ],
+  "checkpoints": [
+    {
+      "round": 5,
+      "accuracy": 0.87,
+      "note": "Rapid initial learning"
+    },
+    {
+      "round": 10,
+      "accuracy": 0.93,
+      "note": "Approaching convergence"
+    },
+    {
+      "round": 15,
+      "accuracy": 0.95,
+      "note": "Converged - ready for deployment"
+    }
+  ]
+}

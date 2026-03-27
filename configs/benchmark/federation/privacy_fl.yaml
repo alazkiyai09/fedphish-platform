@@ -1,0 +1,66 @@
+# Privacy-Preserving FL Configuration
+
+federation:
+  type: "privacy_fl"
+
+  # Server settings
+  server:
+    address: "127.0.0.1:8080"
+    num_rounds: 50
+    min_fit_clients: 8
+    min_eval_clients: 8
+    min_available_clients: 10
+
+  # Client settings
+  client:
+    num_clients: 10
+    local_epochs: 5
+    batch_size: 32
+    learning_rate: 0.01
+    optimizer: "sgd"
+
+  # Privacy mechanisms (can combine multiple)
+  privacy:
+    # Local Differential Privacy
+    local_dp:
+      enabled: true
+      epsilon: 1.0
+      delta: 1e-5
+      max_grad_norm: 1.0
+      noise_mechanism: "gaussian"  # gaussian, laplace
+
+    # Secure Aggregation
+    secure_aggregation:
+      enabled: false
+      protocol: "flwr"  # flwr, custom
+      encryption: "aes"
+
+    # HT2ML hybrid
+    ht2ml:
+      enabled: false
+      epsilon: 1.0
+      protocol: "hybrid"
+
+  # Strategy
+  strategy:
+    method: "fedavg"  # Base strategy
+    fraction_fit: 0.8
+    fraction_evaluate: 0.8
+    min_fit_clients: 8
+
+    # Privacy-aware aggregation
+    privacy_aggregation: true
+    clip_updates: true
+    clip_norm: 1.0
+
+  # Communication
+  communication:
+    compression: true
+    quantization: true
+    quantization_bits: 8
+
+  # Evaluation
+  evaluation:
+    round_metrics: true
+    final_metrics: true
+    privacy_metrics: true

@@ -1,0 +1,69 @@
+# Overhead Analysis Experiment
+# Purpose: Measure computational and communication costs
+
+experiment_name: overhead_analysis
+
+dataset:
+  name: "combined_phishing"
+  total_samples: 100000
+  num_banks: 5
+  samples_per_bank: [1000, 5000, 10000]
+
+privacy_levels: [0, 1, 2, 3]  # No DP, DP, DP+HE, DP+HE+TEE
+
+components:
+  local_training:
+    measure:
+      - time
+      - memory
+      - cpu
+    num_samples: 1000
+
+  zk_proof_gen:
+    measure:
+      - time
+      - memory
+      - communication
+    gradient_size: 1000  # Number of parameters
+
+  he_encryption:
+    measure:
+      - time
+      - memory
+      - communication
+    gradient_size: 1000
+
+  he_decryption:
+    measure:
+      - time
+      - memory
+    num_updates: 5
+
+  tee_aggregation:
+    measure:
+      - time
+      - memory
+    num_updates: 5
+    operation: "geomedian"  # Non-linear operation
+
+  aggregation:
+    measure:
+      - time
+      - memory
+      - communication
+    num_updates: 5
+
+  total_round:
+    measure:
+      - time
+      - memory
+      - communication
+
+evaluation:
+  num_runs: 10  # More runs for overhead measurement
+  warmup_rounds: 2  # Warm up before measuring
+  confidence_interval: 0.99
+
+output:
+  results_dir: "experiments/results/overhead/"
+  filename: "overhead_breakdown.csv"

@@ -1,0 +1,103 @@
+# FedPhish Benchmark Suite - Master Configuration
+# Run with: python -m src.experiments.benchmark
+
+defaults:
+  - dataset: phishing
+  - model: classical_ml
+  - federation: fedavg
+  - attack: null  # No attack by default
+  - override hydra/launcher: basic
+
+# Benchmark settings
+benchmark:
+  name: "FedPhish Benchmark"
+  num_runs: 5  # Number of runs for statistical significance
+  output_dir: "${oc.env:PWD}/results"
+  cache_dir: "${oc.env:PWD}/data/cache"
+  device: "cuda"  # or "cpu"
+  num_workers: 4
+  random_seed: 42
+
+# Methods to benchmark
+methods:
+  - classical_ml
+  - transformer
+  - multi_agent
+  - privacy_gbdt
+
+# Federation configurations
+federations:
+  - centralized
+  - local
+  - fedavg
+  - fedprox
+  - privacy_fl
+
+# Data distributions
+distributions:
+  - iid
+  - non_iid
+  - label_skew
+
+# Attack scenarios
+attacks:
+  - none
+  - label_flip
+  - backdoor
+  - model_poisoning
+
+# Privacy mechanisms
+privacy:
+  - none
+  - local_dp
+  - secure_aggregation
+  - ht2ml
+
+# Differential Privacy parameters
+dp:
+  epsilon_values: [1.0, 0.5, 0.1]
+  delta: 1e-5
+  max_grad_norm: 1.0
+
+# Evaluation metrics
+metrics:
+  classification:
+    - accuracy
+    - auprc
+    - recall_at_1_percent_fpr
+  privacy:
+    - epsilon_achieved
+    - information_leakage
+  robustness:
+    - attack_success_rate
+    - accuracy_degradation
+  efficiency:
+    - training_time
+    - communication_cost
+  fairness:
+    - per_bank_accuracy_variance
+
+# MLflow tracking
+mlflow:
+  experiment_name: "fedphish_benchmark"
+  tracking_uri: "${oc.env:PWD}/mlruns"
+  log_model: true
+  log_artifacts: true
+
+# Output formats
+output:
+  formats:
+    - latex
+    - csv
+    - pdf
+    - svg
+  tables:
+    - main_results
+    - ablation_study
+    - attack_analysis
+    - privacy_tradeoff
+  figures:
+    - comparison_bar
+    - convergence_curves
+    - privacy_accuracy_tradeoff
+    - per_bank_variance

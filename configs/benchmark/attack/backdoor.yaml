@@ -1,0 +1,38 @@
+# Backdoor Attack Configuration
+
+attack:
+  type: "backdoor"
+  enabled: false
+
+  # Backdoor parameters
+  backdoor:
+    # Trigger pattern
+    trigger_type: "text_pattern"  # text_pattern, url_pattern, feature
+    trigger_pattern: "https://secure-login"
+    trigger_insertion: "append"  # append, prepend, replace
+
+    # Target behavior
+    target_label: 1  # Classify as phishing
+    source_label: 0  # When actually legitimate
+    poison_ratio: 0.1  # 10% of training data
+
+    # Backdoor strength
+    gamma: 1.0  # Backdoor strength parameter
+
+  # Attacker model
+  attacker:
+    fraction: 0.1  # 10% of clients
+    selection: "random"
+    specific_clients: []
+
+  # Attack timing
+  timing:
+    start_round: 0
+    end_round: null
+    every_round: true
+
+  # Evaluation
+  evaluation:
+    measure_asr: true
+    trigger_test_data: true
+    clean_test_accuracy: true

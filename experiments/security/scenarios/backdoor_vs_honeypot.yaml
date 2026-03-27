@@ -1,0 +1,25 @@
+# Scenario: Backdoor vs Honeypot Defense
+
+attack:
+  type: "backdoor"
+  trigger_pattern: "semantic"
+  injection_rate: 0.1
+  gradual: true
+  gradual_schedule: "linear"
+  knows_defense: true
+
+defense:
+  type: "honeypot"
+  num_honeypots: 3
+  deviation_threshold: 2.0
+  distance_metric: "cosine"
+
+coevolution:
+  num_rounds: 20
+  num_clients: 10
+  num_malicious: 2
+
+expected_outcomes:
+  description: "Gradual backdoor vs honeypot deviation detection"
+  equilibrium_likelihood: "moderate"
+  arms_race: "high"

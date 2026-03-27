@@ -1,0 +1,58 @@
+# Privacy-Preserving GBDT Configuration (HT2ML)
+
+model:
+  type: "privacy_gbdt"
+
+  # HT2ML algorithm settings
+  ht2ml:
+    enabled: true
+
+    # Tree construction
+    num_trees: 50
+    max_depth: 5
+    min_samples_split: 10
+    min_samples_leaf: 5
+    learning_rate: 0.1
+
+    # Privacy parameters
+    epsilon: 1.0
+    delta: 1e-5
+    max_leaves: 32
+
+    # Protocol settings
+    protocol: "ht2ml"  # ht2ml, boosted
+    comparison_security: "share"  # share, garbled
+
+    # Communication efficiency
+    compression: true
+    quantization_bits: 16
+
+  # Alternative: XGBoost with DP
+  xgboost_dp:
+    enabled: false
+    n_estimators: 50
+    max_depth: 5
+    learning_rate: 0.1
+
+    # DP parameters
+    dp_enabled: true
+    sigma: 0.5  # Noise multiplier
+    max_grad_norm: 1.0
+    l2_norm_clip: 1.0
+
+  # Training
+  training:
+    batch_size: 1000
+    num_rounds: 100
+    validation_split: 0.1
+
+  # Checkpointing
+  checkpoint:
+    save_trees: true
+    path: "${oc.env:PWD}/data/cache/models"
+
+  # Benchmarking
+  benchmark:
+    track_overhead: true
+    track_communication_rounds: true
+    track_computation_time: true

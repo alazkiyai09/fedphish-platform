@@ -1,0 +1,49 @@
+# Privacy-Utility Trade-off Experiment
+# Purpose: Show tradeoff between privacy and accuracy
+
+experiment_name: privacy_utility_tradeoff
+
+dataset:
+  name: "combined_phishing"
+  total_samples: 100000
+  train_split: 0.8
+  num_banks: 5
+  partition_strategy: "non-iid"
+  dirichlet_alpha: 0.5
+  random_seed: 42
+
+# Privacy level combinations to test
+combinations:
+  - privacy_level: 0, epsilon: null, name: "No DP"
+  - privacy_level: 1, epsilon: 10.0, name: "Light DP"
+  - privacy_level: 1, epsilon: 1.0, name: "Moderate DP"
+  - privacy_level: 1, epsilon: 0.5, name: "Strong DP"
+  - privacy_level: 1, epsilon: 0.1, name: "Very Strong DP"
+  - privacy_level: 2, epsilon: 1.0, name: "DP + HE"
+  - privacy_level: 3, epsilon: 1.0, name: "HT2ML (Full Privacy)"
+
+training:
+  rounds: 20
+  local_epochs: 3
+  batch_size: 32
+
+model:
+  name: "distilbert-base-uncased"
+  lora_rank: 8
+
+evaluation:
+  metrics:
+    - accuracy
+    - auprc
+    - f1_score
+  num_runs: 5
+  confidence_interval: 0.95
+
+overhead_tracking:
+  communication: true
+  computation: true
+  memory: true
+
+output:
+  results_dir: "experiments/results/privacy/"
+  filename: "privacy_utility.csv"

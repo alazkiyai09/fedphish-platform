@@ -1,0 +1,46 @@
+# FedPhish Base Configuration
+
+experiment:
+  num_banks: 5
+  num_rounds: 20
+  local_epochs: 3
+  learning_rate: 2e-5
+  batch_size: 32
+  privacy_level: 3  # 1=DP, 2=DP+HE, 3=DP+HE+TEE
+
+data:
+  path: "data/phishing_data.csv"
+  partition_strategy: "non-iid"  # 'iid', 'non-iid', 'imbalanced'
+  val_size: 0.2
+  max_samples: null
+
+model:
+  model_name: "distilbert-base-uncased"
+  num_labels: 2
+  lora_rank: 8
+  lora_alpha: 32.0
+  freeze_base: true
+
+privacy:
+  epsilon: 1.0
+  delta: 1e-5
+  clipping_norm: 1.0
+  noise_multiplier: null  # Computed from epsilon
+
+security:
+  enable_zk_proofs: true
+  max_gradient_norm: 1.0
+  defense_strategy: "foolsgold"  # 'krum', 'foolsgold', 'trimmed_mean', 'combined'
+  estimated_malicious: 1
+
+training:
+  optimizer: "adamw"
+  weight_decay: 0.01
+  warmup_steps: 100
+  max_grad_norm: 1.0
+
+output:
+  save_dir: "outputs"
+  log_interval: 10
+  save_model: true
+  visualization: true

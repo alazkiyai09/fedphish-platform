@@ -1,0 +1,40 @@
+# Co-evolution experiment configuration
+
+coevolution:
+  num_rounds: 20  # Number of co-evolution rounds
+  equilibrium_window: 5  # Check for equilibrium over this many rounds
+  equilibrium_threshold: 0.01  # Metric change threshold for equilibrium
+  adaptation_strategy: "reactive"  # "reactive", "proactive", "none"
+
+attacker:
+  initial_type: "label_flip"  # Starting attack type
+  can_switch_attack: true  # Allow attacker to change attack type
+  adaptation_trigger: "detected"  # "detected", "always", "success_rate_drop"
+  target_success_rate: 0.8  # Desired attack success rate
+  max_cost_budget: 1000.0  # Maximum attacker cost budget
+
+defender:
+  initial_type: "multi_round_anomaly"  # Starting defense type
+  can_switch_defense: true  # Allow defender to change defense type
+  adaptation_trigger: "attack_detected"  # "attack_detected", "always", "accuracy_drop"
+  target_accuracy: 0.9  # Desired model accuracy
+  max_fp_rate: 0.1  # Maximum acceptable false positive rate
+
+evaluation:
+  metrics:
+    - "attack_success_rate"
+    - "defense_overhead"
+    - "model_accuracy"
+    - "attacker_cost"
+    - "defender_cost"
+    - "detection_rate"
+    - "false_positive_rate"
+  track_equilibrium: true
+  compute_nash_equilibrium: true  # If tractable
+
+logging:
+  log_level: "INFO"
+  save_history: true
+  history_dir: "./results/history"
+  save_plots: true
+  plots_dir: "./results/plots"

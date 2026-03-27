@@ -1,0 +1,36 @@
+# Attack configurations
+
+label_flip:
+  flip_ratio: 0.3
+  target_phishing_type: null  # "financial", "ecommerce", etc. or null for all
+  evasion_strategy: "stay_under_bound"  # "stay_under_bound", "distributed", "random"
+
+backdoor:
+  trigger_pattern: "semantic"  # "semantic", "pixel", "word"
+  injection_rate: 0.1
+  gradual: true
+  gradual_schedule: "linear"  # "linear", "exponential", "sigmoid"
+  target_class: 1  # Target class for backdoor
+  trigger_keywords: ["urgent", "wire transfer", "verify account", "act now"]
+
+model_poisoning:
+  poison_strength: 5.0
+  norm_bound_aware: true
+  sybil_coordination: false
+  num_sybils: 1
+  scaling_strategy: "just_under_bound"  # "just_under_bound", "adaptive"
+
+evasion_poisoning:
+  evasion_method: "pgd"  # "pgd", "fgsm", "cw"
+  poison_method: "model_poisoning"
+  combo_strategy: "simultaneous"  # "simultaneous", "alternating"
+  pgd_eps: 0.1
+  pgd_steps: 10
+  pgd_alpha: 0.01
+
+attacker_knowledge:
+  knows_aggregation: true
+  knows_defense: true  # Attacker knows which defense is used
+  knows_thresholds: false  # Attacker doesn't know exact threshold values
+  knows_data_distribution: true
+  knows_other_clients: false  # Doesn't know about other honest clients

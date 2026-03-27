@@ -1,0 +1,92 @@
+# Detection Performance Comparison Experiment
+# Purpose: Compare FedPhish against baseline methods
+
+experiment_name: detection_performance_comparison
+
+dataset:
+  name: "combined_phishing"
+  total_samples: 100000
+  train_split: 0.8
+  test_split: 0.2
+  num_banks: 5
+  partition_strategy: "non-iid"
+  dirichlet_alpha: 0.5
+  random_seed: 42
+
+methods:
+  local_per_bank:
+    name: "Local (Per-Bank)"
+    description: "Each bank trains independently on their local data"
+    rounds: 1
+    privacy_level: 0  # No privacy
+    epsilon: null
+    delta: null
+
+  centralized:
+    name: "Centralized"
+    description: "All data pooled together in one location"
+    rounds: 1
+    privacy_level: 0
+    epsilon: null
+    delta: null
+
+  fedavg:
+    name: "FedAvg"
+    description: "Standard federated averaging"
+    rounds: 20
+    privacy_level: 0
+    epsilon: null
+    delta: null
+
+  fedphish_dp:
+    name: "FedPhish (DP Only)"
+    description: "FedPhish with local differential privacy only"
+    rounds: 20
+    privacy_level: 1
+    epsilon: 1.0
+    delta: 1e-5
+
+  fedphish_he:
+    name: "FedPhish (DP + HE)"
+    description: "FedPhish with local DP and homomorphic encryption"
+    rounds: 20
+    privacy_level: 2
+    epsilon: 1.0
+    delta: 1e-5
+
+  fedphish_ht2ml:
+    name: "FedPhish (Ours)"
+    description: "FedPhish with DP, HE, and TEE (full system)"
+    rounds: 20
+    privacy_level: 3
+    epsilon: 1.0
+    delta: 1e-5
+
+model:
+  name: "distilbert-base-uncased"
+  num_labels: 2
+  lora_rank: 8
+  lora_alpha: 32.0
+  freeze_base: true
+
+training:
+  local_epochs: 3
+  batch_size: 32
+  learning_rate: 2e-5
+  optimizer: "adamw"
+  weight_decay: 0.01
+  max_grad_norm: 1.0
+
+evaluation:
+  metrics:
+    - accuracy
+    - auprc
+    - f1_score
+    - fpr_at_95_tpr
+  num_runs: 5
+  confidence_interval: 0.95
+  stratified: true
+
+output:
+  results_dir: "experiments/results/detection/"
+  filename: "detection_comparison.csv"

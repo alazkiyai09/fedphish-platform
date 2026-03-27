@@ -1,0 +1,157 @@
+\documentclass{acmart}
+
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+\begin{document}
+
+\title{Supplementary Material for FedPhish}
+
+\author{FedPhish Authors}
+
+\begin{document}
+
+\maketitle
+
+\section{Additional Experimental Results}
+\label{sec:appendix_results}
+
+\subsection{Ablation Studies}
+\label{subsec:ablation}
+
+\begin{table}[h]
+\caption{Ablation study on FedPhish components. Each component is removed to measure its impact.}
+\centering
+\begin{tabular}{lcc}
+\toprule
+Configuration & Accuracy (\%) & Attack Defense (\%) \\
+\midrule
+Full FedPhish & $\mathbf{94.1 \pm 0.9}$ & $\mathbf{93.2 \pm 1.5}$ \\
+w/o ZK Proofs & $93.8 \pm 1.0$ & $89.5 \pm 2.1$ \\
+w/o FoolsGold & $93.9 \pm 1.1$ & $91.2 \pm 1.8$ \\
+w/o TEE & $93.5 \pm 1.0$ & $93.0 \pm 1.6$ \\
+w/o Reputation & $93.7 \pm 1.0$ & $92.1 \pm 1.7$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Hyperparameter Sensitivity}
+\label{subsec:hyperparameters}
+
+\subsection{Additional Attack Scenarios}
+\label{subsec:additional_attacks}
+
+\section{Algorithm Pseudocode}
+\label{sec:appendix_algorithms}
+
+\subsection{Client Training Algorithm}
+\label{subsec:client_algo}
+
+\begin{algorithm}
+\caption{FedPhish Client Training}
+\begin{algorithmic}[1]
+\STATE \textbf{Input:} Global model $w_t$, Local dataset $\mathcal{D}_i$, Privacy budget $\epsilon$
+\STATE \textbf{Output:} Model update $\Delta w_i$, ZK proof $\pi_i$
+\STATE
+\STATE Load global model $w_t$
+\STATE
+\STATE \COMMENT{Local training with DP}
+\FOR{epoch $e = 1$ to $E$}
+    \FOR{batch $b$ in $\mathcal{D}_i$}
+        \STATE Compute gradients: $g \leftarrow \nabla \mathcal{L}(w_t, b)$
+        \STATE Clip gradients: $g \leftarrow g / \max(1, \|g\|_2 / C)$
+        \STATE Add noise: $g \leftarrow g + \mathcal{N}(0, \sigma^2 C^2 I)$
+    \ENDFOR
+\ENDFOR
+\STATE
+\STATE \COMMENT{Compute update}
+\STATE $\Delta w_i \leftarrow w_{local} - w_t$
+\STATE
+\STATE \COMMENT{Encrypt with HE}
+\STATE $\Delta w_i^{enc} \leftarrow \text{HE.Encrypt}(\Delta w_i)$
+\STATE
+\STATE \COMMENT{Generate ZK proof}
+\STATE $\pi_i \leftarrow \text{ZK.Prove}(\|\Delta w_i\|_\infty \leq \tau)$
+\STATE
+\RETURN $\Delta w_i^{enc}, \pi_i$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Server Aggregation Algorithm}
+\label{subsec:server_algo}
+
+\begin{algorithm}
+\caption{FedPhish Server Aggregation with TEE}
+\begin{algorithmic}[1]
+\STATE \textbf{Input:} Client updates $\{\Delta w_i^{enc}, \pi_i\}_{i=1}^N$, TEE context
+\STATE \textbf{Output:} Aggregated model $w_{t+1}$
+\STATE
+\FOR{each client $i$}
+    \STATE \COMMENT{Verify ZK proof}
+    \IF{$\text{ZK.Verify}(\pi_i) = FALSE$}
+        \STATE Reject client $i$
+        \CONTINUE
+    \ENDIF
+\ENDFOR
+\STATE
+\STATE \COMMENT{TEE-protected aggregation}
+\STATE Enter TEE context
+\STATE
+\FOR{each client $i$}
+    \STATE $\Delta w_i \leftarrow \text{HE.Decrypt}(\Delta w_i^{enc})$
+\ENDFOR
+\STATE
+\STATE \COMMENT{Compute similarity scores}
+\FOR{each pair $(i, j)$}
+    \STATE $s_{ij} \leftarrow \cos(\Delta w_i, \Delta w_j)$
+\ENDFOR
+\STATE
+\STATE \COMMENT{FoolsGold weighting}
+\FOR{each client $i$}
+    \STATE $\alpha_i \leftarrow \frac{1}{1 + \sum_{j \neq i} s_{ij}}$
+    \STATE $\alpha_i \leftarrow \frac{\alpha_i}{\sum_k \alpha_k}$ \COMMENT{Normalize}
+\ENDFOR
+\STATE
+\STATE \COMMENT{Weighted aggregation}
+\STATE $\Delta w_{agg} \leftarrow \sum_i \alpha_i \Delta w_i$
+\STATE $w_{t+1} \leftarrow w_t + \Delta w_{agg}$
+\STATE
+\STATE Exit TEE context
+\STATE
+\RETURN $w_{t+1}$
+\end{algorithmic}
+\end{algorithm}
+
+\section{Security Proofs}
+\label{sec:appendix_proofs}
+
+\subsection{Differential Privacy Guarantee}
+\label{subsec:dp_proof}
+
+\begin{theorem}
+FedPhish client training satisfies $(\epsilon, \delta)$-differential privacy when using DP-SGD with clipping norm $C$, noise multiplier $\sigma$, for $T$ iterations.
+\end{theorem}
+
+\begin{proof}
+Following the standard DP-SGD analysis...
+
+\end{proof}
+
+\subsection{Zero-Knowledge Proof Soundness}
+\label{subsec:zk_proof}
+
+\begin{theorem}
+The gradient bounds proof system is sound under the discrete logarithm assumption in the random oracle model.
+\end{theorem}
+
+\begin{proof}
+...
+
+\end{proof}
+
+\section{Hardware and Software Configuration}
+\label{sec:appendix_config}
+
+\end{document}

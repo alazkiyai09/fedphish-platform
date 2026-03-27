@@ -1,0 +1,74 @@
+# Transformer Model Configuration
+
+model:
+  type: "transformer"
+
+  # Base model
+  base_model: "distilbert-base-uncased"
+  tokenizer: "distilbert-base-uncased"
+
+  # LoRA configuration
+  lora:
+    enabled: true
+    r: 8  # Rank
+    alpha: 16
+    dropout: 0.1
+    target_modules:
+      - "q_lin"
+      - "k_lin"
+      - "v_lin"
+      - "lin1"
+      - "lin2"
+    bias: "none"
+
+  # Model architecture
+  architecture:
+    num_labels: 2
+    hidden_size: 768
+    dropout: 0.1
+    attention_dropout: 0.1
+
+  # Training hyperparameters
+  training:
+    batch_size: 32
+    num_epochs: 10
+    learning_rate: 2e-5
+    warmup_steps: 500
+    weight_decay: 0.01
+    gradient_clip_val: 1.0
+    accumulation_steps: 1
+
+    # Optimizer
+    optimizer: "adamw"
+    scheduler: "linear"
+
+    # Early stopping
+    early_stopping:
+      enabled: true
+      patience: 3
+      monitor: "val_loss"
+      mode: "min"
+
+  # Mixed precision training
+  mixed_precision:
+    enabled: true
+    dtype: "float16"
+
+  # Checkpointing
+  checkpoint:
+    save_total_limit: 3
+    save_strategy: "epoch"
+    path: "${oc.env:PWD}/data/cache/models"
+
+  # Text preprocessing
+  text:
+    max_length: 512
+    truncation: true
+    padding: "max_length"
+    lowercase: true
+
+  # For vanilla fine-tuning (no LoRA)
+  vanilla_finetune:
+    enabled: false
+    freeze_base: false
+    freeze_layers: 0  # Number of layers to freeze
