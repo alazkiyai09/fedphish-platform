@@ -1,30 +1,53 @@
-# FedPhish Platform (`fedphish-platform`)
+<div align="center">
 
-Full-stack **federated phishing detection platform** that combines model training, vertical federation workflows, adversarial security simulation, benchmark orchestration, and dashboard operations.
+# 🛰️ FedPhish Platform
 
-## Why This Repository
+### Federated Phishing Detection • Coevolution Security • Benchmarking • Dashboard
 
-Most FL security demos split training, security, and visualization into disconnected projects. `fedphish-platform` integrates these surfaces into one platform for research-to-production handoff.
+[![Python](https://img.shields.io/badge/Python-3.12+-blue.svg)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat&logo=fastapi)](https://fastapi.tiangolo.com/)
+[![Federated Learning](https://img.shields.io/badge/Federated-Learning-326CE5?style=flat)](https://flower.ai/)
+[![WebSocket](https://img.shields.io/badge/WebSocket-Real--Time-4CAF50?style=flat)](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)
 
-## Core Features
+[Overview](#-overview) • [About](#-about) • [Topics](#-topics) • [API](#-api-surfaces) • [Quick Start](#-quick-start)
 
-- Federated phishing training modules (client/server/privacy/detection)
-- Vertical FL and PSI integration surfaces
-- Security coevolution utilities for attack-vs-defense simulation
-- Benchmark runner and scenario config structure
-- Unified FastAPI endpoints for prediction, training, security, benchmark
-- Dashboard backend/frontend structure for demo and monitoring workflows
+---
 
-## Project Structure
+End-to-end platform for **federated phishing model training**, **security attack-defense coevolution**, **benchmark automation**, and **dashboard-assisted operations**.
 
-- `src/fedphish/`: core platform modules (client/server/privacy/security)
-- `src/federation/vertical/`: vertical FL workflows and interfaces
-- `src/security/`: attacks, defenses, coevolution, game-theory surfaces
-- `src/benchmark/`: benchmark runner and config assets
-- `src/api/`: unified platform FastAPI app
-- `src/dashboard/`: backend + frontend dashboard components
+</div>
 
-## API Endpoints
+---
+
+## 🎯 Overview
+
+`fedphish-platform` unifies:
+
+- Federated phishing prediction and training workflows
+- Security coevolution simulation (attacker vs defender)
+- Benchmark orchestration and scenario management
+- Dashboard-ready API and WebSocket streams
+
+## 📌 About
+
+- Built to connect research-grade FL security with platform operations
+- Consolidates APIs, simulators, configs, and benchmark assets
+- Suitable for iterative red-team/blue-team evaluation cycles
+
+## 🏷️ Topics
+
+`fedphish` `federated-learning` `phishing-detection` `adversarial-ml` `security-simulation` `fastapi` `websocket` `benchmarking`
+
+## 🧩 Architecture
+
+- `src/fedphish/`: core platform services
+- `src/federation/vertical/`: vertical FL workflows
+- `src/security/`: attacks, defenses, coevolution logic
+- `src/benchmark/`: benchmark pipelines and configs
+- `src/dashboard/`: backend/frontend dashboard modules
+- `src/api/`: unified API entrypoint
+
+## 🌐 API Surfaces
 
 - `POST /api/v1/predict`
 - `POST /api/v1/predict/batch`
@@ -38,14 +61,17 @@ Most FL security demos split training, security, and visualization into disconne
 - `GET /api/v1/security/game-theory`
 - `GET /health`
 - `GET /metrics`
+- `WS /ws/simulation`
 
-## Quick Start
+## ⚡ Quick Start
 
 ```bash
 pip install -r requirements.txt
 uvicorn src.api.main:app --reload
 ```
 
-## SEO Keywords
+## 🛠️ Tech Stack
 
-federated phishing detection, fedphish platform, vertical federated learning phishing, adversarial federated learning security, coevolution attack defense simulation, fastapi federated ai platform
+**Core:** FastAPI, Pydantic, WebSockets  
+**FL/Security:** federated training + adversarial simulation modules  
+**Ops:** dashboard backend, benchmark config assets
